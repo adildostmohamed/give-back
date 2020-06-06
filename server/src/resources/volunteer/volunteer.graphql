@@ -1,0 +1,44 @@
+type Volunteer {
+  _id: ObjectID!
+  user: User!
+  interests: [ListingCategory]!
+  viewedListings: [Listing]!
+  shortlistedListings: [Listing]!
+  contactedListings: [Listing]!
+  activeListings: [Listing]!
+  completedListings: [Listing]!
+}
+
+input NewVolunteerInput {
+  user: ID!
+  interests: [ListingCategory]!
+}
+
+input CurrentUserVolunteerInput {
+  interests: [ListingCategory]!
+}
+
+input UpdateVolunteerInput {
+  _id: ID!
+  interests: [ListingCategory]
+  viewedListings: [ID]
+  shortlistedListings: [ID]
+  contactedListings: [ID]
+  activeListings: [ID]
+  completedListings: [ID]
+}
+
+extend type Query {
+  volunteer(_id: ID!): Volunteer!
+  volunteers: [Volunteer]!
+  currentUserVolunteer: Volunteer!
+}
+
+extend type Mutation {
+  createVolunteer(input: NewVolunteerInput!): Volunteer!
+  updateVolunteer(input: UpdateVolunteerInput!): Volunteer!
+  deleteVolunteer(_id: ID!): Volunteer!
+  createVolunteerForCurrentUser(input: CurrentUserVolunteerInput!): Volunteer!
+  volunteerViewListing(listingId: ID!): Volunteer!
+  volunteerShortlistListing(listingId: ID!): Volunteer!
+}

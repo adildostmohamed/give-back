@@ -23,7 +23,21 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
+      enum: ["USER", "ADMIN"],
       required: [true, "User must have a role"],
+    },
+    profileType: {
+      type: String,
+      enum: ["VOLUNTEER", "ORGANISATION", "ADMIN"],
+      required: [true, "User must have a profile type"],
+    },
+    organisation: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "organisation",
+    },
+    volunteer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "volunteer",
     },
   },
   { timestamps: true }

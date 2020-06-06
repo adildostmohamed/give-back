@@ -1,0 +1,68 @@
+enum ListingCategory {
+  DATA
+  DESIGN
+  TECHNOLOGY
+  CONSULTING
+  ADMIN
+  OTHER
+}
+
+enum ListingStatus {
+  OPEN
+  FILLED
+  COMPLETED
+  PAUSED
+  REMOVED
+}
+
+type Listing {
+  _id: ObjectID!
+  title: String!
+  description: String!
+  organisation: Organisation!
+  category: [ListingCategory!]!
+  status: ListingStatus!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input NewListingInput {
+  title: String!
+  description: String!
+  category: [ListingCategory!]!
+  status: ListingStatus = OPEN
+}
+
+input UpdateListingInput {
+  _id: ID!
+  title: String
+  description: String
+  category: [ListingCategory]
+  status: ListingStatus
+}
+
+input ListingFilterInput {
+  category: [String] = []
+  status: [String] = []
+}
+
+extend type Query {
+  listing(_id: ID!): Listing!
+  listings: [Listing]!
+  listingsForUserOrg(filter: ListingFilterInput): [Listing]!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+}
+
+extend type Mutation {
+  createListing(input: NewListingInput!): Listing!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  updateListing(input: UpdateListingInput!): Listing!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  deleteListing(_id: ID!): Listing!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  adminDeleteAllListings: [Listing]
+}

@@ -6,13 +6,24 @@ enum Role {
   USER
 }
 
+enum ProfileType {
+  VOLUNTEER
+  ORGANISATION
+  ADMIN
+}
+
 type User {
-  id: ID!
+  _id: ObjectID!
   firstName: String!
   lastName: String!
   email: String!
   password: String!
+  profileType: ProfileType!
   role: Role
+  organisation: Organisation
+  volunteer: Volunteer
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type AuthPayload {
@@ -25,16 +36,20 @@ input AdminNewUserInput {
   lastName: String!
   email: String!
   password: String!
+  profileType: ProfileType!
   role: Role = USER
+  organisation: ID
 }
 
 input AdminUpdateUserInput {
-  id: ID!
+  _id: ID!
   firstName: String
   lastName: String
   email: String
   password: String
+  profileType: ProfileType
   role: Role
+  organisation: ID
 }
 
 input UpdateCurrentUserInput {
@@ -42,6 +57,8 @@ input UpdateCurrentUserInput {
   lastName: String
   email: String
   password: String
+  profileType: ProfileType
+  organisation: ID
 }
 
 input LoginInput {
@@ -54,12 +71,14 @@ input SignupInput {
   lastName: String!
   email: String!
   password: String!
+  profileType: ProfileType!
   role: Role = USER
+  organisation: ID
 }
 
 type Query {
   currentUser: User! @authentication
-  user(id: ID!): User! @authorization(role: ADMIN)
+  user(_id: ID!): User! @authorization(role: ADMIN)
   users: [User]! @authorization(role: ADMIN)
 }
 
@@ -67,7 +86,7 @@ type Mutation {
   adminCreateUser(input: AdminNewUserInput!): User! @authorization(role: ADMIN)
   adminUpdateUser(input: AdminUpdateUserInput!): User!
     @authorization(role: ADMIN)
-  adminDeleteUser(id: ID!): User! @authorization(role: ADMIN)
+  adminDeleteUser(_id: ID!): User! @authorization(role: ADMIN)
   login(input: LoginInput!): AuthPayload!
   signup(input: SignupInput!): AuthPayload!
   updateCurrentUser(input: UpdateCurrentUserInput): User! @authentication

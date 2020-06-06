@@ -1,4 +1,5 @@
 @import "../../node_modules/bulma/bulma.sass";
+@import "../../node_modules/antd/dist/antd.css";
 
 .show-password__btn {
   position: absolute;
@@ -8,4 +9,28 @@
   box-shadow: none;
   border: none;
   outline: none;
+}
+
+.content-wrapper {
+  margin: 56px 0 0 0;
+  background-color: white;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.content-wrapper__inner {
+  padding: 24px;
+}
+
+.listings__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 32px 0;
+}
+
+.listings__heading {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }

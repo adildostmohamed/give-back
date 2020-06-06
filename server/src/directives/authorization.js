@@ -1,7 +1,4 @@
-const {
-  SchemaDirectiveVisitor,
-  AuthenticationError,
-} = require("apollo-server");
+const { SchemaDirectiveVisitor, ForbiddenError } = require("apollo-server");
 const { defaultFieldResolver } = require("graphql");
 
 class AuthorizationDirective extends SchemaDirectiveVisitor {
@@ -40,7 +37,7 @@ class AuthorizationDirective extends SchemaDirectiveVisitor {
         const ctx = args[2];
         const user = ctx.user;
         if (user.role !== requiredRole) {
-          throw new AuthenticationError("Do not have the required permissions");
+          throw new ForbiddenError("Do not have the required permissions");
         }
 
         return resolve.apply(this, args);

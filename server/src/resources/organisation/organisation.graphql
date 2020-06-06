@@ -1,0 +1,39 @@
+directive @profileType(profileType: ProfileType) on OBJECT | FIELD_DEFINITION
+
+type Organisation {
+  _id: ObjectID!
+  name: String!
+  contactEmail: String!
+  listings: [Listing]
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input NewOrganisationInput {
+  name: String!
+  contactEmail: String!
+}
+
+input UpdateOrganisationInput {
+  _id: ID!
+  name: String
+  contactEmail: String
+}
+
+extend type Query {
+  organisation(_id: ID): Organisation!
+  organisations: [Organisation]!
+}
+
+extend type Mutation {
+  createOrganisation(input: NewOrganisationInput!): Organisation!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  updateOrganisation(input: UpdateOrganisationInput!): Organisation!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  deleteOrganisation(_id: ID!): Organisation!
+    @authentication
+    @profileType(profileType: ORGANISATION)
+  addCurrentUserToOrganisation(organisationId: ID!): User! @authentication
+}

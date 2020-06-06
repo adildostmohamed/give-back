@@ -13,7 +13,35 @@ const getUserFromToken = async (authorizationHeader) => {
     const token = authorizationHeader.replace("Bearer ", "");
     // get the user id from the token
     const user = jwt.verify(token, JWT_SECRET);
-    const userProfile = await userModel.findById(user.id);
+    let userProfile = await userModel.findById(user.id);
+    await userProfile
+      .populate("organisation")
+      .populate({
+        path: "volunteer",
+        populate: [
+          {
+            path: "shortlistedListings",
+            model: "listing",
+          },
+          {
+            path: "viewedListings",
+            model: "listing",
+          },
+          {
+            path: "contactedListings",
+            model: "listing",
+          },
+          {
+            path: "completedListings",
+            model: "listing",
+          },
+          {
+            path: "activeListings",
+            model: "listing",
+          },
+        ],
+      })
+      .execPopulate();
     return userProfile;
   } catch (e) {
     return null;
